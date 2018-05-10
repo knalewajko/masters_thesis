@@ -376,32 +376,16 @@ ggplot(db, aes(x=factor(PopBinary), y=PiD)) +
 ggplot(db, aes(x=factor(PopBinary), y=NationalID)) +
   geom_boxplot() 
 
-################################################################
-# HERE A TEST MISSING DUMMY x CONTINUOUS
-################################################################
-
 ggplot(db, aes(x=SumPop, y=NationalID)) +
   geom_jitter() + geom_smooth() 
-
-################################################################
-# HERE A TEST MISSING CONTINUOUS x CONTINUOUS
-################################################################
 
 # Voting for populists by age
 
 ggplot(db, aes(x=factor(PopBinary), y=Age)) +
   geom_boxplot() 
 
-################################################################
-# HERE A TEST MISSING DUMMY x CONTINUOUS
-################################################################
-
 ggplot(db, aes(x=SumPop, y=Age)) +
   geom_jitter() + geom_smooth() 
-
-################################################################
-# HERE A TEST MISSING CONTINUOUS x CONTINUOUS
-################################################################
 
 # Voting for populists by employment status
 
@@ -419,17 +403,7 @@ ggplot(db, aes(x=factor(Treatment), y=NationalID)) +
 
 chisq.test(db$Treatment, db$NationalID) #X-squared = 39.108, df = 40, p-value = 0.5103
 
-################################################################
-# HERE A TEST MISSING CATEGORICAL x CONTINUOUS
-################################################################
-
 ggplot(db, aes(x=factor(Treatment), y=LeftRight)) +
   geom_boxplot() 
 
 chisq.test(db$Treatment, db$LeftRight) # X-squared = 18.907, df = 14, p-value = 0.1685
-
-################################################################
-# HERE A TEST MISSING CATEGORICAL x CONTINUOUS
-################################################################
-
-
