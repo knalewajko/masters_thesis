@@ -1091,10 +1091,6 @@ PxTOnVote <- ggplot(data = subset(pred_fullPxT,
   geom_errorbar(aes(ymin=lwr, ymax=upr), lwd=1, width=0.2, lty=1, alpha = 0.5)
 PxTOnVote
 
-
-
-
-
 ########################### MARGINAL EFFECTS PLOTS
 
 # Marginal effects plots for significant interactions
@@ -1135,9 +1131,6 @@ summary(plotdf)
 
 ggplot(data = plotdf) + geom_line(aes(x = emp, y = coefs, group = 1)) + 
   geom_ribbon(aes(x = emp, ymin=ci_lower, ymax=ci_upper), alpha=0.3)
-
-
-
 
 # HYPOTHESIS 2: Polish voters are motivated in their choices by in and out-group-identity (populist) rhetoric more than by concrete policy proposals
 library(cjoint)
@@ -1290,96 +1283,6 @@ log1 <- glm(data = db, formula = EconWonkBinary ~ relevel(as.factor(Treatment), 
 log2 <- glm(data = db, formula = EconWonkBinary ~ relevel(as.factor(Treatment), 'control') +
               Income + NationalID + Party2015 + Province + Education + Age, family = 'binomial')
 
-
-# The message about the worsening state of the economy from the foreign source is persuasive insofar as the respondent is not a natinoalist
-
-ols <- lm(db, Treatment:NationalID)
-
-
-
-
-
-
-
-
-
-
-
-###########################################################################
-
-# FOR MY REFERENCE
-
-# Create a variable listing all possible interaction terms
-db$intGenEDu <- interaction(db$Gender, db$Education)
-levels(db$intGenEDu)
-class(db$Gender)
-levels(db$Gender)
-
-# To plot logit interactions
-attributes(summary(log5))
-attributes(log5)
-df <- as.data.frame(results$estimates)
-
-# Change NAs of "Party2015" to "0" for easier releveling
-
-db <- db %>% 
-  mutate_at(c(12:13), funs(replace(., is.na(.), 0)))
-
-pred_outT3 <- predict(object = log3, 
-                      newdata = pred_dfT,
-                      # interval = 'prediction',
-                      # level=.95,
-                      type = 'response',
-                      se.fit = TRUE)
-
-pred_outT3$upr = pred_outT3$fit + 1.96 * pred_outT3$se.fit
-pred_outT3$lwr = pred_outT3$fit - 1.96 * pred_outT3$se.fit
-
-pred_fullT3 <- cbind(pred_dfT, pred_outT3)
-
-# Plot treatment effects on vote choice for the logit model that I haven't used in the end
-
-TOnVote3 <- ggplot(pred_fullT3, aes(x=Treatment, y = fit)) +
-  geom_errorbar(aes(ymin = lwr, ymax = upr), width = 0.2, lty=1, lwd=1, col="red") +
-  geom_point(shape=18, size=5, fill="black") +
-  # labs(title= " Predicted probabilities", x="Opinion", y="Pr(y=1)", caption = "add footnote here") +
-  theme(plot.title = element_text(family = "sans", face="bold", size=13, hjust=0.5),
-        axis.title = element_text(family = "sans", size=9),
-        plot.caption = element_text(family = "sans", size=5))
-
-# TOnVote3 <- ggplot(data = subset(pred_fullT3, 
-Treatment %in% c("A", "B", "control")),
-aes(x = Treatment, y = fit, ymin = lwr, ymax = upr,
-    color = Treatment, fill = Treatment,
-    group = Treatment)) +
-  geom_point(data = subset(pred_fullT3, Treatment %in% c("A", "B", "control")), 
-             aes(x = Treatment, y = fit,
-                 color = Treatment), 
-             alpha = 0.5,
-             inherit.aes = FALSE) + 
-  geom_errorbar(aes(ymin=lwr, ymax=upr), 
-                lwd=1, width=0) +
-  geom_line() +
-  geom_ribbon(alpha = 0.2, color = FALSE)
-
-TOnVote3
-
-
-
-## ?????
-
-# plot(pred_full$fit ~ pred_full$Income)
-
-db <- read_excel("RAW_1_V2.xlsx", sheet = 3)
-
-glm(formula = inlf ~ nwifeinc + educ + exper + expersq + age +
-      kidslt6 + kidsge6, family = binomial(link = logit), data = d)
-
-install.packages("interplot")
-library(interplot)
-
-
-
 #################################################################
 
 # GOODNESS-OF-FIT CHECKS OF LOGIT MODELS 5 AND 6
@@ -1418,10 +1321,3 @@ log3v <- glm(data=db2, PopBinary ~ Treatment + Sex + Age + Education + Income + 
 
 HL6 <- hosmer(db2$PopBinary, fitted(log3v))
 HL6
-
-
-
-
-
-
-
